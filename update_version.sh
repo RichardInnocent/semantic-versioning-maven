@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#
+# Inputs
+#   TOKEN
+#   GIT_EMAIL: The email address each commit should be associated with. Defaults to a github provided noreply address
+#   GIT_USERNAME: The GitHub username each commit should be associated with. Defaults to github-actions[bot]
+#   POM_PATH: The path within your directory the pom.xml you intended to change is located.
+#
+
 MAJOR=0
 MINOR=1
 PATCH=2
@@ -19,6 +27,7 @@ get_version_incrementType()
 
 get_next_version()
 {
+  local mvn_version
   mvn_version=$(mvn -q \
       -Dexec.executable=echo \
       -Dexec.args='${project.version}' \
@@ -52,7 +61,32 @@ get_next_version()
   fi
 }
 
-get_next_version "fix(hello)!: commit message"
+if [[ -z "$GITHUB_TOKEN" ]]
+then
+  echo "No GITHUB_TOKEN environment variable provided. This is required."
+  exit 1
+fi
+if [[ -z "$GIT_EMAIL" ]]
+then
+  echo "No GIT_EMAIL environment variable provided. This is required."
+fi
+if [[ -z "$GIT_USERNAME" ]]
+then
+  GIT_USERNAME="semantic-versioning-maven[bot]"
+fi
+if [[ -z "$POM_PATH" ]]
+then
+  POM_PATH="."
+fi
+
+get_next_version "$(git log -1)"
 echo "Setting version to $next_version"
 
 mvn versions:set -DnewVersion="$next_version" -DprocessAllModules -DgenerateBackupPoms=false
+
+git add POM_PATH/pom.xml
+REPO="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
+git commit -m "Bump pom.xml from $OLD_VERSION to $NEW_VERSION"
+git tag "$NEW_VERSION"
+git push "$REPO" --follow-tags
+git push "$REPO" --tags
