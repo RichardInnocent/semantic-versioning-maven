@@ -27,6 +27,8 @@ runs:
   using: "composite"
   steps:
     - name: Increment version and deploy
+      run: ${{ github.action_path }}/update_version.sh
+      shell: bash
       env:
         TOKEN: ${{ inputs.token }}
         GIT_EMAIL: ${{ inputs.gitEmail }}
