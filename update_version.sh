@@ -154,7 +154,7 @@ get_relevant_commits()
 #   [none]
 make_version_changes()
 {
-  mvn versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
+  mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
