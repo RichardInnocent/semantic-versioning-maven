@@ -7,23 +7,36 @@
 #     required: true
 #     description: The token used to perform the commit actions such as committing the version
 #         changes to the repository.
+#     example: ghp_123456789abcdefgfijklmnopqrstuvwxyz
+#   GITHUB_ACTOR
+#     required: true
+#     description: The owner of the GitHub repository.
+#     example: owner-name
+#   GITHUB_REPOSITORY
+#     required: true
+#     description: The name of the GitHub repository.
+#     example: repository-name
 #   GIT_EMAIL
 #     required: false
 #     description: The email address each commit should be associated with.
 #     default: A GitHub-provided no-reply address.
+#     example: my-git-bot@example.com
 #   GIT_USERNAME
 #     required: false
 #     description: The GitHub username each commit should be associated with.
 #     default: github-actions[bot]
+#     example: my-git-bot
 #   POM_PATH
 #     required: false
 #     description: The path within your directory the pom.xml you intended to change is located.
 #     default: .
+#     example: ./project
 #   DEPLOY_ACTION
 #     required: false
 #     description: The action that will run upon the successful incrementation of the version. Note
 #         that this will not run if the version does not change.
 #     default: mvn deploy
+#     example: mvn deploy
 #
 # Outputs:
 #   [none]
@@ -156,7 +169,7 @@ then
 fi
 if [[ -z "$GIT_EMAIL" ]]
 then
-  echo "No GIT_EMAIL environment variable provided. This is required."
+  GIT_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
 fi
 if [[ -z "$GIT_USERNAME" ]]
 then
