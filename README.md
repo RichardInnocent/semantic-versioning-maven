@@ -101,3 +101,12 @@ The arguments required to run the task are outlined below.
 | `git-email`    | No       | The email address each commit will be associated with. | `my-git-bot@example.com` | `41898282+github-actions[bot]@users.noreply.github.com` |
 | `git-username` | No       | The GitHub username each commit will be associated with. | `my-git-bot` | `github-actions[bot]` |
 | `pom-path`     | No       | The path within your directory where the parent pom.xml you intend to change is located. | `./project` | `.` |
+
+### Running in a container
+
+This action should work in a container. Please ensure that your container has the following packages:
+- [Git](https://git-scm.com/)
+- [Maven](https://maven.apache.org/)
+- [Bash](https://www.gnu.org/software/bash/)
+
+
