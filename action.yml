@@ -38,7 +38,7 @@ runs:
   using: "composite"
   steps:
     - name: Find update_version.sh
-      run: find /home -name update_version.sh
+      run: find / -name update_version.sh
       shell: bash
     - name: Increment version
       id: increment-version
