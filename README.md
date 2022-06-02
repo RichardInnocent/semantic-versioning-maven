@@ -31,10 +31,10 @@ recommend using [concurrency limits]
 
 For example, a Maven project is currently at version `2.5.6` and is tagged. It then receives the
 following commits:
-`feat(#19)!: Added ISBN to books` -> Version is now `3.0.0`
-`fix(#20): Fixed issue where ...` -> Version is now `3.0.1`
-`feat(#15): Allow users to se...` -> Version is now `3.1.0`
-`Merge branch 'main' of https...` -> Version is now `3.1.0`
+`feat(#19)!: Added ISBN to books` -> Version is now `3.0.0`  
+`fix(#20): Fixed issue where ...` -> Version is now `3.0.1`  
+`feat(#15): Allow users to se...` -> Version is now `3.1.0`  
+`Merge branch 'main' of https...` -> Version is now `3.1.0`  
 `fix(#15): Prevent users from...` -> Version is now `3.1.1`
 
 The GitHub Action would increment the version to version `3.1.1` and then make the changes to the
