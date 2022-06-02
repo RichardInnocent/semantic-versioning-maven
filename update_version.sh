@@ -189,7 +189,7 @@ echo "::set-output name=previous-version::$current_version"
 echo "::set-output name=new-version::$current_version"
 
 # Git can cause problems in a container as the directory is owner by another user. Make sure Git knows it's safe
-git config --global --add safe.directory *
+git config --global --add safe.directory "*"
 get_relevant_commits
 
 if [[ -z "$commit_messages" ]]
