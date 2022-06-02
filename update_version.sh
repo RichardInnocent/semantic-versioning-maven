@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#
+# Inputs
+#   TOKEN
+#   GIT_EMAIL: The email address each commit should be associated with. Defaults to a github provided noreply address
+#   GIT_USERNAME: The GitHub username each commit should be associated with. Defaults to github-actions[bot]
+#   POM_PATH: The path within your directory the pom.xml you intended to change is located.
+#
+
 MAJOR=0
 MINOR=1
 PATCH=2
@@ -35,7 +43,6 @@ get_version_increment_type()
 get_current_version()
 {
   current_version=$(mvn -q \
-      -Dexec.executable=echo \
       -Dexec.args='${project.version}' \
       --non-recursive \
       exec:exec)
@@ -114,9 +121,11 @@ get_relevant_commits()
 make_version_changes()
 {
   mvn versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
-  # TODO - commit changes
+  local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
+  git commit -m "Bump version to $1"
   git tag "v$1"
-  git push origin --tags
+  git push "$repo" --follow-tags
+  git push "$repo" --tags
 }
 
 get_relevant_commits
@@ -137,3 +146,20 @@ done <<< "$commit_messages"
 echo "Setting version to $version"
 
 #make_version_changes "$version"
+if [[ -z "$GITHUB_TOKEN" ]]
+then
+  echo "No GITHUB_TOKEN environment variable provided. This is required."
+  exit 1
+fi
+if [[ -z "$GIT_EMAIL" ]]
+then
+  echo "No GIT_EMAIL environment variable provided. This is required."
+fi
+if [[ -z "$GIT_USERNAME" ]]
+then
+  GIT_USERNAME="semantic-versioning-maven[bot]"
+fi
+if [[ -z "$POM_PATH" ]]
+then
+  POM_PATH="."
+fi
