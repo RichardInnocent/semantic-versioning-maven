@@ -171,10 +171,19 @@ then
   DEPLOY_ACTION="mvn deploy"
 fi
 
+cd "$POM_PATH"
+
 get_relevant_commits
-echo "Attempting to up-version across the $(echo "$commit_messages" | wc -l | xargs) commits since the last tag"
+number_of_commits="$(echo "$commit_messages" | wc -l | xargs)"
+if [[ "$number_of_commits" == "1" ]]
+then
+  echo "Attempting to up-version across the $number_of_commits commit since the last tag"
+else
+  echo "Attempting to up-version across the $number_of_commits commits since the last tag"
+fi
 
 get_current_version
+echo "Current version: $current_version"
 version="$current_version"
 
 while IFS= read -r commit
