@@ -60,7 +60,7 @@ get_version_increment_type()
     version_increment_type="$MINOR"
   elif [[ "$1" =~ ^[Ff][Ii][Xx](\(.*\))?:.*$ ]]
   then
-    version_increment_type="$MINOR"
+    version_increment_type="$PATCH"
   else
     version_increment_type="$NONE"
   fi
