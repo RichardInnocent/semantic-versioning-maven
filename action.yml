@@ -35,7 +35,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Increment version and deploy
+    - name: Increment version
+      id: increment-version
       run: ${{ github.action_path }}/update_version.sh
       shell: bash
       env:
@@ -43,6 +44,13 @@ runs:
         GIT_EMAIL: ${{ inputs.git-email }}
         GIT_USERNAME: ${{ inputs.git-username }}
         POM_PATH: ${{ inputs.pom-path }}
+    - name: Print outputs
+      run: echo "Updated version. $PREVIOUS_VERSION -> $NEW_VERSION"
+      shell: bash
+      env:
+        PREVIOUS_VERSION: ${{ steps.increment-version.outputs.previous-version }}
+        NEW_VERSION: ${{ steps.increment-version.outputs.new-version }}
+
 
 branding:
   color: orange
