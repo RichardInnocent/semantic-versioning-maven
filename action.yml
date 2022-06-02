@@ -1,0 +1,35 @@
+name: semantic-versioning-maven
+description: A simple GitHub action tool to increment the Maven version of a pom and all of its children (if present) based on conventional commits. See https://www.conventionalcommits.org/en/v1.0.0
+author: Richard Innocent
+
+inputs:
+  token:
+    description: The token used to perform the commit actions such as committing the version changes to the repository.
+    required: true
+  gitEmail:
+    description: The email address each commit will be associated with.
+    required: false
+    default: 41898282+github-actions[bot]@users.noreply.github.com
+  gitUsername:
+    description: The GitHub username each commit will be associated with.
+    required: false
+    default: github-actions[bot]
+  pomPath:
+    description: The path within your directory where the parent pom.xml you intend to change is located.
+    required: false
+    default: .
+  deployAction:
+    description: The action that will run upon the successful incrementation of the version. Note that this will not run if the version does not change.
+    required: false
+    default: mvn deploy
+
+runs:
+  using: "composite"
+  steps:
+    - name: Increment version and deploy
+      env:
+        TOKEN: ${{ inputs.token }}
+        GIT_EMAIL: ${{ inputs.gitEmail }}
+        GIT_USERNAME: ${{ inputs.gitUsername }}
+        POM_PATH: ${{ inputs.pomPath }}
+        DEPLOY_ACTION: ${{ inputs.deployAction }}
