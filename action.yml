@@ -1,5 +1,5 @@
 name: semantic-versioning-maven
-description: A simple GitHub Action to increment the Maven version of a pom and all of its children (if present) based on conventional commits.
+description: A simple GitHub Action to increment the Maven version of a project based on conventional commits.
 author: Richard Innocent
 
 inputs:
