@@ -37,6 +37,9 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Print action path
+      run: echo ${{ github.action_path }}
+      shell: bash
     - name: Find update_version.sh
       run: find / -name update_version.sh
       shell: bash
