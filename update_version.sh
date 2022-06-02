@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#
-#
 # Inputs:
 #   TOKEN
 #     required: true
@@ -76,6 +74,7 @@ get_version_increment_type()
 get_current_version()
 {
   current_version=$(mvn -q \
+      -Dexec.executable=echo \
       -Dexec.args='${project.version}' \
       --non-recursive \
       exec:exec)
@@ -155,8 +154,9 @@ make_version_changes()
 {
   mvn versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
-  git add */pom.xml
-  git commit -m "Bump version to $1 [skip ci]"
+  git add ./\*pom.xml
+  echo "$repo"
+  git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
   git tag "v$1"
   git push "$repo" --follow-tags
   git push "$repo" --tags
@@ -187,6 +187,13 @@ fi
 cd "$POM_PATH"
 
 get_relevant_commits
+
+if [[ -z "$commit_messages" ]]
+then
+  echo "No commits found since last tag. Skipping all actions and terminating"
+  exit 0
+fi
+
 number_of_commits="$(echo "$commit_messages" | wc -l | xargs)"
 if [[ "$number_of_commits" == "1" ]]
 then
