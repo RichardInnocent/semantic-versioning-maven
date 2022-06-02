@@ -51,3 +51,53 @@ commit) then the deployment step will be executed. Out of the box, this command 
 mvn deploy
 ```
 This can be customised by specifying a different deploy action.
+
+## Usage
+```yaml
+name: Deploy
+on: [push]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Ensures that the action runs over multiple commits
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Build with Maven
+        run: mvn package
+
+      - name: Increment version
+        id: increment-version
+        uses: RichardInnocent/semantic-versioning-maven@v0.0.11
+        with:
+          token: ${{ secrets.github_token }}
+
+      # Everything below here shows how you might use the results of the action...
+
+      - name: Print if version changed
+        if: steps.increment-version.outputs.previous-value != steps.increment-version.outputs.new-version
+        run: echo "The new version is now $new_version"
+        env:
+          new_version: ${{ steps.increment-version.outputs.new-version }}
+```
+
+### Arguments
+
+The arguments required to run the task are outlined below.
+
+| Name           | Required | Description | Example | Default |
+| -------------- | -------- | ----------- | ------- | ------- |
+| `token`        | Yes      | The token used to perform the commit actions such as commiting the version changes to the repository. | `ghp\_123456789abcdefgfijklmnopqrstuvwxyz` | N/A |
+| `git-email`    | No       | The email address each commit will be associated with. | `my-git-bot@example.com` | `41898282+github-actions[bot]@users.noreply.github.com` |
+| `git-username` | No       | The GitHub username each commit will be associated with. | `my-git-bot` | `github-actions[bot]` |
+| `pom-path`     | No       | The path within your directory where the parent pom.xml you intend to change is located. | `./project` | `.` |
