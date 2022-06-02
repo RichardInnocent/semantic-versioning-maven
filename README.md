@@ -26,8 +26,9 @@ push multiple commits to a repository, for which GitHub actions only run for the
 commit. Only running it for the latest version might mean that we miss a significant version change.
 
 _Note that this can cause some issues is multiple builds are running concurrently. We therefore
-recommend using [concurrency limits]
-(https://docs.github.com/en/actions/using-jobs/using-concurrency) to allow only one job at a time._
+recommend using
+[concurrency limits](https://docs.github.com/en/actions/using-jobs/using-concurrency) to allow only
+one job at a time._
 
 For example, a Maven project is currently at version `2.5.6` and is tagged. It then receives the
 following commits:
