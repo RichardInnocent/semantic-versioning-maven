@@ -1,12 +1,32 @@
 #!/bin/bash
 
 #
-# Inputs
-#   TOKEN
-#   GIT_EMAIL: The email address each commit should be associated with. Defaults to a github provided noreply address
-#   GIT_USERNAME: The GitHub username each commit should be associated with. Defaults to github-actions[bot]
-#   POM_PATH: The path within your directory the pom.xml you intended to change is located.
 #
+# Inputs:
+#   TOKEN
+#     required: true
+#     description: The token used to perform the commit actions such as committing the version
+#         changes to the repository.
+#   GIT_EMAIL
+#     required: false
+#     description: The email address each commit should be associated with.
+#     default: A GitHub-provided no-reply address.
+#   GIT_USERNAME
+#     required: false
+#     description: The GitHub username each commit should be associated with.
+#     default: github-actions[bot]
+#   POM_PATH
+#     required: false
+#     description: The path within your directory the pom.xml you intended to change is located.
+#     default: .
+#   DEPLOY_ACTION
+#     required: false
+#     description: The action that will run upon the successful incrementation of the version. Note
+#         that this will not run if the version does not change.
+#     default: mvn deploy
+#
+# Outputs:
+#   [none]
 
 MAJOR=0
 MINOR=1
@@ -122,31 +142,14 @@ make_version_changes()
 {
   mvn versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
-  git commit -m "Bump version to $1"
+  git add */pom.xml
+  git commit -m "Bump version to $1 [skip ci]"
   git tag "v$1"
   git push "$repo" --follow-tags
   git push "$repo" --tags
 }
 
-get_relevant_commits
-echo "Attempting to up-version across the $(echo "$commit_messages" | wc -l | xargs) commits since the last tag"
-
-get_current_version
-version=$current_version
-
-while IFS= read -r commit
-do
-  echo "Processing commit: $commit"
-  get_next_version "$version" "$commit"
-  echo "  Version before: $version" 
-  version=$next_version
-  echo "  Version after:  $version"
-done <<< "$commit_messages"
-
-echo "Setting version to $version"
-
-#make_version_changes "$version"
-if [[ -z "$GITHUB_TOKEN" ]]
+if [[ -z "$TOKEN" ]]
 then
   echo "No GITHUB_TOKEN environment variable provided. This is required."
   exit 1
@@ -163,3 +166,35 @@ if [[ -z "$POM_PATH" ]]
 then
   POM_PATH="."
 fi
+if [[ -z "$DEPLOY_ACTION" ]]
+then
+  DEPLOY_ACTION="mvn deploy"
+fi
+
+get_relevant_commits
+echo "Attempting to up-version across the $(echo "$commit_messages" | wc -l | xargs) commits since the last tag"
+
+get_current_version
+version="$current_version"
+
+while IFS= read -r commit
+do
+  echo "Processing commit: $commit"
+  get_next_version "$version" "$commit"
+  echo "  Version before: $version" 
+  version="$next_version"
+  echo "  Version after:  $version"
+done <<< "$commit_messages"
+
+echo "Setting version to $version"
+
+if [[ "$version" == "$current_version" ]]
+then
+  echo "Version not incremented. Skipping deployment actions"
+  exit 0
+fi
+
+make_version_changes "$version"
+
+echo "Running deployment action: $DEPLOY_ACTION"
+eval "$DEPLOY_ACTION"
