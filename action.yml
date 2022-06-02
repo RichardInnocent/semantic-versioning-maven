@@ -38,14 +38,14 @@ runs:
   using: "composite"
   steps:
     - name: Print action path
-      run: echo ${{ github.action_path }}
+      run: echo "${GITHUB_ACTION_PATH}"
       shell: bash
     - name: Find update_version.sh
       run: find / -name update_version.sh
       shell: bash
     - name: Increment version
       id: increment-version
-      run: ${{ github.action_path }}/update_version.sh
+      run: ${GITHUB_ACTION_PATH}/update_version.sh
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
