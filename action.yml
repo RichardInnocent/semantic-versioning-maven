@@ -37,8 +37,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Print action path
-      run: ls ${{ github.action_path }}
+    - name: Find update_version.sh
+      run: find /home -name update_version.sh
       shell: bash
     - name: Increment version
       id: increment-version
