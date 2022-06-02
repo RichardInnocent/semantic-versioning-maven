@@ -31,6 +31,7 @@ recommend using [concurrency limits]
 
 For example, a Maven project is currently at version `2.5.6` and is tagged. It then receives the
 following commits:
+
 `feat(#19)!: Added ISBN to books` -> Version is now `3.0.0`  
 `fix(#20): Fixed issue where ...` -> Version is now `3.0.1`  
 `feat(#15): Allow users to se...` -> Version is now `3.1.0`  
