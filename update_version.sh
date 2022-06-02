@@ -183,6 +183,11 @@ fi
 
 cd "$POM_PATH"
 
+get_current_version
+echo "Current version: $current_version"
+echo "::set-output name=previous-version::$current_version"
+echo "::set-output name=new-version::$current_version"
+
 get_relevant_commits
 
 if [[ -z "$commit_messages" ]]
@@ -199,9 +204,6 @@ else
   echo "Attempting to up-version across the $number_of_commits commits since the last tag"
 fi
 
-get_current_version
-echo "Current version: $current_version"
-echo "::set-output name=vpreviousVersion::$current_version"
 version="$current_version"
 
 while IFS= read -r commit
@@ -214,7 +216,7 @@ do
 done <<< "$commit_messages"
 
 echo "Setting version to $version"
-echo "::set-output name=newVersion::$version"
+echo "::set-output name=new-version::$version"
 
 if [[ "$version" == "$current_version" ]]
 then

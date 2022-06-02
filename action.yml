@@ -9,25 +9,25 @@ inputs:
       The token used to perform the commit actions such as committing the version changes to the
       repository.
     required: true
-  gitEmail:
+  git-email:
     description: The email address each commit will be associated with.
     required: false
     default: 41898282+github-actions[bot]@users.noreply.github.com
-  gitUsername:
+  git-username:
     description: The GitHub username each commit will be associated with.
     required: false
     default: github-actions[bot]
-  pomPath:
+  pom-path:
     description: >
       The path within your directory where the parent pom.xml you intend to change is located.
     required: false
     default: .
 
 outputs:
-  previousVersion:
+  previous-version:
     description: >
       The version before the version was incremented. This may be the same as the new version.
-  newVersion:
+  new-version:
     description: >
       The new version after the version was incremented. This may be the same as the previous
       version.
@@ -40,9 +40,9 @@ runs:
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
-        GIT_EMAIL: ${{ inputs.gitEmail }}
-        GIT_USERNAME: ${{ inputs.gitUsername }}
-        POM_PATH: ${{ inputs.pomPath }}
+        GIT_EMAIL: ${{ inputs.git-email }}
+        GIT_USERNAME: ${{ inputs.git-username }}
+        POM_PATH: ${{ inputs.pom-path }}
 
 branding:
   color: orange
