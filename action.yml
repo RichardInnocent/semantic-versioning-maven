@@ -27,10 +27,12 @@ outputs:
   previous-version:
     description: >
       The version before the version was incremented. This may be the same as the new version.
+    value: ${{ steps.increment-version.outputs.previous-version }}
   new-version:
     description: >
       The new version after the version was incremented. This may be the same as the previous
       version.
+    value: ${{ steps.increment-version.outputs.new-version }}
 
 runs:
   using: "composite"
@@ -50,7 +52,6 @@ runs:
       env:
         PREVIOUS_VERSION: ${{ steps.increment-version.outputs.previous-version }}
         NEW_VERSION: ${{ steps.increment-version.outputs.new-version }}
-
 
 branding:
   color: orange
