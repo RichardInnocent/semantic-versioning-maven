@@ -155,7 +155,6 @@ make_version_changes()
   mvn versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git add ./\*pom.xml
-  echo "$repo"
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
   git tag "v$1"
   git push "$repo" --follow-tags
@@ -179,10 +178,6 @@ if [[ -z "$POM_PATH" ]]
 then
   POM_PATH="."
 fi
-if [[ -z "$DEPLOY_ACTION" ]]
-then
-  DEPLOY_ACTION="mvn deploy"
-fi
 
 cd "$POM_PATH"
 
@@ -204,6 +199,7 @@ fi
 
 get_current_version
 echo "Current version: $current_version"
+echo "::set-output name=vpreviousVersion::$current_version"
 version="$current_version"
 
 while IFS= read -r commit
@@ -216,6 +212,7 @@ do
 done <<< "$commit_messages"
 
 echo "Setting version to $version"
+echo "::set-output name=newVersion::$version"
 
 if [[ "$version" == "$current_version" ]]
 then
@@ -224,6 +221,3 @@ then
 fi
 
 make_version_changes "$version"
-
-echo "Running deployment action: $DEPLOY_ACTION"
-eval "$DEPLOY_ACTION"

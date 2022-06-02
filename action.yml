@@ -1,10 +1,13 @@
 name: semantic-versioning-maven
-description: A simple GitHub Action to increment the Maven version of a project based on conventional commits.
+description: >
+  A simple GitHub Action to increment the Maven version of a project based on conventional commits.
 author: Richard Innocent
 
 inputs:
   token:
-    description: The token used to perform the commit actions such as committing the version changes to the repository.
+    description: >
+      The token used to perform the commit actions such as committing the version changes to the
+      repository.
     required: true
   gitEmail:
     description: The email address each commit will be associated with.
@@ -15,13 +18,19 @@ inputs:
     required: false
     default: github-actions[bot]
   pomPath:
-    description: The path within your directory where the parent pom.xml you intend to change is located.
+    description: >
+      The path within your directory where the parent pom.xml you intend to change is located.
     required: false
     default: .
-  deployAction:
-    description: The action that will run upon the successful incrementation of the version. Note that this will not run if the version does not change.
-    required: false
-    default: mvn deploy
+
+outputs:
+  previousVersion:
+    description: >
+      The version before the version was incremented. This may be the same as the new version.
+  newVersion:
+    description: >
+      The new version after the version was incremented. This may be the same as the previous
+      version.
 
 runs:
   using: "composite"
@@ -34,7 +43,6 @@ runs:
         GIT_EMAIL: ${{ inputs.gitEmail }}
         GIT_USERNAME: ${{ inputs.gitUsername }}
         POM_PATH: ${{ inputs.pomPath }}
-        DEPLOY_ACTION: ${{ inputs.deployAction }}
 
 branding:
   color: orange
