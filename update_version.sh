@@ -156,7 +156,6 @@ make_version_changes()
 {
   mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
-  git config --global -add safe.directory .
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
   git tag "v$1"
@@ -189,6 +188,8 @@ echo "Current version: $current_version"
 echo "::set-output name=previous-version::$current_version"
 echo "::set-output name=new-version::$current_version"
 
+# Git can cause problems in a container as the directory is owner by another user. Make sure Git knows it's safe
+git config --global -add safe.directory .
 get_relevant_commits
 
 if [[ -z "$commit_messages" ]]
