@@ -33,3 +33,7 @@ runs:
         GIT_USERNAME: ${{ inputs.gitUsername }}
         POM_PATH: ${{ inputs.pomPath }}
         DEPLOY_ACTION: ${{ inputs.deployAction }}
+
+branding:
+  color: orange
+  icon: arrow-up-circle
