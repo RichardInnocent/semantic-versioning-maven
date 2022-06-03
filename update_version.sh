@@ -154,8 +154,8 @@ make_version_changes()
 {
   mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-  for (( i=0; i<${#GITHUB_ACTOR}; i++ )); do
-    echo "${GITHUB_ACTOR:$i:1}"
+  for (( i=0; i<${#repo}; i++ )); do
+    echo "${repo:$i:1}"
   done
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
