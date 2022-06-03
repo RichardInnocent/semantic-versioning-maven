@@ -130,7 +130,7 @@ get_relevant_commits()
   if [[ $number_of_tags == "0" ]]
   then
     echo "No tags exist. Processing all commits"
-    commit_messages=$(git log --format=%s)
+    commit_messages=$(git log --reverse --format=%s)
     echo "Commit messages:"
     echo "$commit_messages"
   else
@@ -142,7 +142,7 @@ get_relevant_commits()
     fi
     latest_tag=$(git describe --tags --abbrev=0)
     echo "Latest tag: $latest_tag"
-    commit_messages=$(git log $latest_tag..HEAD --format=%s)
+    commit_messages=$(git log $latest_tag..HEAD --reverse --format=%s)
   fi 
 }
 
