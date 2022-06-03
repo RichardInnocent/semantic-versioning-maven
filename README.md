@@ -80,7 +80,7 @@ jobs:
         id: increment-version
         uses: RichardInnocent/semantic-versioning-maven@v0.0.26
         with:
-          token: ${{ secrets.github_token }}
+          access-token: ${{ secrets.github_token }}
 
       # Everything below here shows how you might use the results of the action...
 
@@ -97,7 +97,7 @@ The arguments required to run the task are outlined below.
 
 | Name           | Required | Description | Example | Default |
 | -------------- | -------- | ----------- | ------- | ------- |
-| `token`        | Yes      | The token used to perform the commit actions such as commiting the version changes to the repository. | `ghp_123456789abcdefgfijklmnopqrstuvwxyz` | N/A |
+| `access-token` | Yes      | The token used to perform the commit actions such as commiting the version changes to the repository. | `ghp_123456789abcdefgfijklmnopqrstuvwxyz` | N/A |
 | `git-email`    | No       | The email address each commit will be associated with. | `my-git-bot@example.com` | `41898282+github-actions[bot]@users.noreply.github.com` |
 | `git-username` | No       | The GitHub username each commit will be associated with. | `my-git-bot` | `github-actions[bot]` |
 | `pom-path`     | No       | The path within your directory where the parent pom.xml you intend to change is located. | `./project` | `.` |

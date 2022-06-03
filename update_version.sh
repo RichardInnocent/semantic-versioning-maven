@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Inputs:
-#   TOKEN
+#   ACCESS_TOKEN
 #     required: true
 #     description: The token used to perform the commit actions such as committing the version
 #         changes to the repository.
@@ -153,7 +153,7 @@ get_relevant_commits()
 make_version_changes()
 {
   mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
-  local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
+  local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
   echo "PRINTING REPO"
@@ -163,9 +163,9 @@ make_version_changes()
   git push "$repo" --tags
 }
 
-if [[ -z "$TOKEN" ]]
+if [[ -z "$ACCESS_TOKEN" ]]
 then
-  echo "No GITHUB_TOKEN environment variable provided. This is required."
+  echo "No ACCESS_TOKEN environment variable provided. This is required."
   exit 1
 fi
 if [[ -z "$GIT_EMAIL" ]]

@@ -4,7 +4,7 @@ description: >
 author: Richard Innocent
 
 inputs:
-  token:
+  access-token:
     description: >
       The token used to perform the commit actions such as committing the version changes to the
       repository.
@@ -48,7 +48,7 @@ runs:
       run: ${GITHUB_ACTION_PATH}/update_version.sh
       shell: bash
       env:
-        TOKEN: ${{ inputs.token }}
+        ACCESS_TOKEN: ${{ inputs.access-token }}
         GIT_EMAIL: ${{ inputs.git-email }}
         GIT_USERNAME: ${{ inputs.git-username }}
         POM_PATH: ${{ inputs.pom-path }}
