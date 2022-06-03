@@ -78,7 +78,7 @@ jobs:
 
       - name: Increment version
         id: increment-version
-        uses: RichardInnocent/semantic-versioning-maven@v0.0.24
+        uses: RichardInnocent/semantic-versioning-maven@v0.0.26
         with:
           token: ${{ secrets.github_token }}
 
