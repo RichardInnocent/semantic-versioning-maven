@@ -131,8 +131,6 @@ get_relevant_commits()
   then
     echo "No tags exist. Processing all commits"
     commit_messages=$(git log --reverse --format=%s)
-    echo "Commit messages:"
-    echo "$commit_messages"
   else
     if [[ $number_of_tags == "1" ]]
     then
@@ -158,6 +156,7 @@ make_version_changes()
   local repo="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
+  echo "$repo"
   git tag "v$1"
   git push "$repo" --follow-tags
   git push "$repo" --tags
