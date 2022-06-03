@@ -78,14 +78,14 @@ jobs:
 
       - name: Increment version
         id: increment-version
-        uses: RichardInnocent/semantic-versioning-maven@v0.0.11
+        uses: RichardInnocent/semantic-versioning-maven@v0.0.24
         with:
           token: ${{ secrets.github_token }}
 
       # Everything below here shows how you might use the results of the action...
 
       - name: Print if version changed
-        if: steps.increment-version.outputs.previous-value != steps.increment-version.outputs.new-version
+        if: steps.increment-version.outputs.previous-version != steps.increment-version.outputs.new-version
         run: echo "The new version is now $new_version"
         env:
           new_version: ${{ steps.increment-version.outputs.new-version }}
