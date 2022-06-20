@@ -40,9 +40,6 @@ runs:
     - name: Print action path
       run: echo "${GITHUB_ACTION_PATH}"
       shell: bash
-    - name: Find update_version.sh
-      run: find / -name update_version.sh
-      shell: bash
     - name: Increment version
       id: increment-version
       run: ${GITHUB_ACTION_PATH}/update_version.sh
