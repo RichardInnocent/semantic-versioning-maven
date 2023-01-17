@@ -29,6 +29,10 @@
 #     description: The path within your directory the pom.xml you intended to change is located.
 #     default: .
 #     example: ./project
+#  VERSION_PREFIX:
+#    description: The prefix to include before the semantic version number
+#    required: false
+#    default: v
 #   DEPLOY_ACTION
 #     required: false
 #     description: The action that will run upon the successful incrementation of the version. Note
@@ -156,7 +160,7 @@ make_version_changes()
   local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
-  git tag "v$1"
+  git tag "$VERSION_PREFIX$1"
   git push "$repo" --follow-tags
   git push "$repo" --tags
 }
@@ -177,6 +181,10 @@ fi
 if [[ -z "$POM_PATH" ]]
 then
   POM_PATH="."
+fi
+if [[ -z "$VERSION_PREFIX" ]]
+then
+  VERSION_PREFIX="v"
 fi
 
 cd "$POM_PATH"
