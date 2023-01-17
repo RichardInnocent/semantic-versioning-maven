@@ -182,7 +182,7 @@ if [[ -z "$POM_PATH" ]]
 then
   POM_PATH="."
 fi
-if [[ -z "$VERSION_PREFIX" ]]
+if [[ -z ${VERSION_PREFIX+x} ]]
 then
   VERSION_PREFIX="v"
 fi
