@@ -22,6 +22,10 @@ inputs:
       The path within your directory where the parent pom.xml you intend to change is located.
     required: false
     default: .
+  version-prefix:
+    description: The prefix to include before the semantic version number.
+    required: false
+    default: v
 
 outputs:
   previous-version:
@@ -49,6 +53,7 @@ runs:
         GIT_EMAIL: ${{ inputs.git-email }}
         GIT_USERNAME: ${{ inputs.git-username }}
         POM_PATH: ${{ inputs.pom-path }}
+        VERSION_PREFIX: ${{ inputs.version-prefix }}
     - name: Print outputs
       run: echo "Updated version. $PREVIOUS_VERSION -> $NEW_VERSION"
       shell: bash
