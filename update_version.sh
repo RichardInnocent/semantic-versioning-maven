@@ -79,7 +79,7 @@ get_current_version()
 {
   current_version=$(mvn -q \
       -Dexec.executable=echo \
-      -Dexec.args="${project.version}" \
+      -Dexec.args='${project.version}' \
       --non-recursive \
       exec:exec | xargs)
 }
@@ -144,7 +144,7 @@ get_relevant_commits()
     fi
     latest_tag=$(git describe --tags --abbrev=0)
     echo "Latest tag: $latest_tag"
-    commit_messages=$(git log $latest_tag..HEAD --reverse --format=%s)
+    commit_messages=$(git log "$latest_tag"..HEAD --reverse --format=%s)
   fi 
 }
 
