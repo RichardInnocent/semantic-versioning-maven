@@ -95,7 +95,7 @@ get_next_version()
   if [[ ! "$1" =~ ^[0-9]*\.[0-9]*\.[0-9]*$ ]]
   then
     echo "Existing version is not semantic. Version will not be incremented."
-    next_version="$mvn_version"
+    next_version="$1"
     exit 0
   fi
 
