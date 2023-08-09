@@ -79,9 +79,9 @@ get_current_version()
 {
   current_version=$(mvn -q \
       -Dexec.executable=echo \
-      -Dexec.args='${project.version}' \
+      -Dexec.args="${project.version}" \
       --non-recursive \
-      exec:exec)
+      exec:exec | xargs)
 }
 
 # Gets the next version based on the current version and the commit message.
@@ -187,14 +187,15 @@ then
   VERSION_PREFIX="v"
 fi
 
-cd "$POM_PATH"
+cd "$POM_PATH" || { echo "Could not cd to pom path. Exiting. Pom path: $POM_PATH"; exit 1; }
 
 get_current_version
 echo "Current version: $current_version"
-echo "previous-version=$current_version" >> $GITHUB_OUTPUT
-echo "new-version=$current_version" >> $GITHUB_OUTPUT
+echo "previous-version=$current_version" >> "$GITHUB_OUTPUT"
+echo "new-version=$current_version" >> "$GITHUB_OUTPUT"
 
-# Git can cause problems in a container as the directory is owner by another user. Make sure Git knows it's safe
+# Git can cause problems in a container as the directory is owner by another user.
+# Make sure Git knows it's safe
 git config --global --add safe.directory "*"
 get_relevant_commits
 
@@ -224,7 +225,7 @@ do
 done <<< "$commit_messages"
 
 echo "Setting version to $version"
-echo "new-version=$version" >> $GITHUB_OUTPUT
+echo "new-version=$version" >> "$GITHUB_OUTPUT"
 
 if [[ "$version" == "$current_version" ]]
 then
