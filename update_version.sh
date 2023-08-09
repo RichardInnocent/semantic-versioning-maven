@@ -77,11 +77,7 @@ get_version_increment_type()
 #   current_version: The current version of the Maven project, e.g. 1.0.0
 get_current_version()
 {
-  current_version=$(mvn -q \
-      -Dexec.executable=echo \
-      -Dexec.args='${project.version}' \
-      --non-recursive \
-      exec:exec | xargs)
+  current_version=$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | xargs)")
 }
 
 # Gets the next version based on the current version and the commit message.
@@ -96,7 +92,7 @@ get_next_version()
   then
     echo "Existing version is not semantic. Version will not be incremented."
     next_version="$1"
-    return
+    exit 0
   fi
 
   IFS='.' read -ra version_components <<< "$1"
