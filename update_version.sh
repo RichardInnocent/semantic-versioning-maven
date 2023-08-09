@@ -191,8 +191,8 @@ cd "$POM_PATH"
 
 get_current_version
 echo "Current version: $current_version"
-echo "::set-output name=previous-version::$current_version"
-echo "::set-output name=new-version::$current_version"
+echo "previous-version=$current_version" >> $GITHUB_OUTPUT
+echo "new-version=$current_version" >> $GITHUB_OUTPUT
 
 # Git can cause problems in a container as the directory is owner by another user. Make sure Git knows it's safe
 git config --global --add safe.directory "*"
@@ -224,7 +224,7 @@ do
 done <<< "$commit_messages"
 
 echo "Setting version to $version"
-echo "::set-output name=new-version::$version"
+echo "new-version=$version" >> $GITHUB_OUTPUT
 
 if [[ "$version" == "$current_version" ]]
 then
