@@ -96,7 +96,7 @@ get_next_version()
   then
     echo "Existing version is not semantic. Version will not be incremented."
     next_version="$1"
-    exit 0
+    return
   fi
 
   IFS='.' read -ra version_components <<< "$1"
