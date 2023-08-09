@@ -78,7 +78,7 @@ jobs:
 
       - name: Increment version
         id: increment-version
-        uses: RichardInnocent/semantic-versioning-maven@v0.0.36
+        uses: RichardInnocent/semantic-versioning-maven@v0.0.37
         with:
           access-token: ${{ secrets.github_token }}
 
@@ -109,5 +109,3 @@ This action should work in a container. Please ensure that your container has th
 - [Git](https://git-scm.com/)
 - [Maven](https://maven.apache.org/)
 - [Bash](https://www.gnu.org/software/bash/)
-
-
