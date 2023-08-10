@@ -80,6 +80,9 @@ get_current_version()
   echo "Printing current version from function"
   echo "$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | xargs)")"
   current_version=$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | xargs)")
+  current_version=$(xargs "$current_version")
+  echo "Printing double-trimmed version"
+  echo "$current_version"
 }
 
 # Gets the next version based on the current version and the commit message.
