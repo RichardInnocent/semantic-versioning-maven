@@ -153,7 +153,12 @@ get_relevant_commits()
 make_version_changes()
 {
   mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
-  local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+  if [[ -z "$ACCESS_TOKEN" ]]
+  then
+    local repo=""
+  else
+    local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+  fi
   git add ./\*pom.xml
   git -c "user.email=$GIT_EMAIL" -c "user.name=$GIT_USERNAME" commit -m "Increment version to $1 [skip ci]"
   git tag "$VERSION_PREFIX$1"
@@ -161,11 +166,6 @@ make_version_changes()
   git push "$repo" --tags
 }
 
-if [[ -z "$ACCESS_TOKEN" ]]
-then
-  echo "No ACCESS_TOKEN environment variable provided. This is required."
-  exit 1
-fi
 if [[ -z "$GIT_EMAIL" ]]
 then
   GIT_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"

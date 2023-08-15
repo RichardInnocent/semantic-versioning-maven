@@ -8,7 +8,7 @@ inputs:
     description: >
       The token used to perform the commit actions such as committing the version changes to the
       repository.
-    required: true
+    required: false
   git-email:
     description: The email address each commit will be associated with.
     required: false

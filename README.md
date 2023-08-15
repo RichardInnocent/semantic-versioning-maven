@@ -61,6 +61,11 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    # Make sure you give your process the appropriate permissions! These are required unless
+    # using an access token for auth.
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       - uses: actions/checkout@v3
@@ -79,8 +84,6 @@ jobs:
       - name: Increment version
         id: increment-version
         uses: RichardInnocent/semantic-versioning-maven@v0.0.37
-        with:
-          access-token: ${{ secrets.github_token }}
 
       # Everything below here shows how you might use the results of the action...
 
