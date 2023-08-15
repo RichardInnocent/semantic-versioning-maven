@@ -78,9 +78,9 @@ get_version_increment_type()
 get_current_version()
 {
   echo "Printing current version from function"
-  mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
-  mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | od -vAn -tcx1
-  current_version=$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | xargs)")
+  mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | head -1
+  mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | head -1  | od -vAn -tcx1
+  current_version=$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | head -1)")
   echo "$current_version" | od -vAn -tcx1
 }
 
