@@ -77,7 +77,7 @@ get_version_increment_type()
 #   current_version: The current version of the Maven project, e.g. 1.0.0
 get_current_version()
 {
-  current_version=$(echo -n "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | head -1 | xargs)")
+  current_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | head -1 | xargs)
 }
 
 # Gets the next version based on the current version and the commit message.
