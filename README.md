@@ -66,8 +66,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Ensures that the action runs over multiple commits
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -80,7 +78,7 @@ jobs:
 
       - name: Increment version
         id: increment-version
-        uses: RichardInnocent/semantic-versioning-maven@v0.0.37
+        uses: RichardInnocent/semantic-versioning-maven@v0.1.0
 
       # Everything below here shows how you might use the results of the action...
 
