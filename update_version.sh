@@ -1,11 +1,6 @@
 #!/bin/bash
 
 # Inputs:
-#   ACCESS_TOKEN
-#     required: true
-#     description: The token used to perform the commit actions such as committing the version
-#         changes to the repository.
-#     example: ghp_123456789abcdefgfijklmnopqrstuvwxyz
 #   GITHUB_ACTOR
 #     required: true
 #     description: The owner of the GitHub repository.
@@ -14,6 +9,11 @@
 #     required: true
 #     description: The name of the GitHub repository.
 #     example: repository-name
+#   ACCESS_TOKEN
+#     required: false
+#     description: The token used to perform the commit actions such as committing the version
+#         changes to the repository.
+#     example: ghp_123456789abcdefgfijklmnopqrstuvwxyz
 #   GIT_EMAIL
 #     required: false
 #     description: The email address each commit should be associated with.

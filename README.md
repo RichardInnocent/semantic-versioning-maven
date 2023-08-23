@@ -61,11 +61,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    # Make sure you give your process the appropriate permissions! These are required unless
-    # using an access token for auth.
-    permissions:
-      contents: write
-      packages: write
 
     steps:
       - uses: actions/checkout@v3
