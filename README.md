@@ -61,16 +61,18 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    # Only run one job a time to avoid conflicts
+    concurrency: ci-${{ github.ref }}
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Ensures that the action runs over multiple commits
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'adopt'
 
       - name: Build with Maven
