@@ -155,7 +155,7 @@ make_version_changes()
   mvn -q versions:set -DnewVersion="$1" -DprocessAllModules -DgenerateBackupPoms=false
   if [[ -z "$ACCESS_TOKEN" ]]
   then
-    local repo=""
+    local repo="https://github.com/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY"
   else
     local repo="https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
   fi
