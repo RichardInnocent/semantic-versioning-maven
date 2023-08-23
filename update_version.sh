@@ -127,6 +127,8 @@ get_next_version()
 #       will be on a different line.
 get_relevant_commits()
 {
+  # Ensure we get all commits not just the latest
+  git fetch --unshallow
   number_of_tags=$(git tag | wc -l | xargs)
   if [[ $number_of_tags == "0" ]]
   then
